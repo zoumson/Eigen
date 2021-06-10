@@ -1,0 +1,1 @@
+/usr/bin/c++  -DPCL_ONLY_CORE_POINT_TYPES=ON -DNO_EXPLICIT_INSTANTIATIONS -O3 -DNDEBUG  -rdynamic CMakeFiles/eigenGeometry.dir/src/eigenGeometry.cpp.o  -o ../bin/eigenGeometry 

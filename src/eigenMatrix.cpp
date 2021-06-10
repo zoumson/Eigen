@@ -1,5 +1,6 @@
 #include <iostream>
-using namespace std;
+#include "Log.h"
+//using namespace std;
 #include <ctime>
 // Eigen libraries
 #include <Eigen/Core>
@@ -14,7 +15,13 @@ using namespace std;
 
 int main( int argc, char** argv )
 {
-    // All vectors and matrices in Eigen are Eigen::Matrix, which is a template class. 
+    //Set the log first 
+    za::my_logger::logger_type log = za::my_logger::get();
+    za::Log logManager;   
+    logManager.set_log_file("./log/logEigenMatix.log"); 
+    BOOST_LOG_SEV(log, za::report) <<"Basic Eigen lib Matrix demo\n";
+    
+    //All vectors and matrices in Eigen are Eigen::Matrix, which is a template class. 
     //Its first three parameters are: data type, row, column
     // Declare a 2*3 float matrix
     Eigen::Matrix<float, 2, 3> matrix_23;
@@ -39,13 +46,14 @@ int main( int argc, char** argv )
     // The following is the operation of the Eigen array
      // Input data (initialization) 
     matrix_23 << 1, 2, 3, 4, 5, 6;
+    BOOST_LOG_SEV(log, za::report)  << "2 by 3 matrix initialization, row major:\n";
     // Output
-    cout << matrix_23 << endl;
+    BOOST_LOG_SEV(log, za::report)  << matrix_23 << "\n";
 
     // Use () to access the elements in the matrix
-    for (int i=0; i<2; i++) 
+    for (int i=0; i<matrix_23.rows(); i++) 
     {
-        for (int j=0; j<3; j++)cout<<matrix_23(i,j)<<"\t";cout<<endl;
+        for (int j=0; j < matrix_23.cols(); j++)BOOST_LOG_SEV(log, za::report) <<matrix_23(i,j)<<"\t";BOOST_LOG_SEV(log, za::report) <<"\n";
     }
 
     // Multiply matrix and vector (actually it is still matrix and matrix)
@@ -55,10 +63,10 @@ int main( int argc, char** argv )
     // Eigen::Matrix<double, 2, 1> result_wrong_type = matrix_23 * v_3d;
     // should be explicitly converted
     Eigen::Matrix<double, 2, 1> result = matrix_23.cast<double>() * v_3d;
-    cout << result << endl;
+    BOOST_LOG_SEV(log, za::report)  << result << "\n";
 
     Eigen::Matrix<float, 2, 1> result2 = matrix_23 * vd_3d;
-    cout << result2 << endl;
+    BOOST_LOG_SEV(log, za::report)  << result2 << "\n";
 
     // Similarly you can't make a mistake about the dimensions of the matrix
     // Try to cancel the comment below and see what error Eigen will report
@@ -67,20 +75,20 @@ int main( int argc, char** argv )
     // some matrix operations
     // The four arithmetic operations will not be demonstrated, just use +-*/.。
     matrix_33 = Eigen::Matrix3d::Random();      // Random number matrix
-    cout << matrix_33 << endl << endl;
+    BOOST_LOG_SEV(log, za::report)  << matrix_33 << "\n" << "\n";
 
-    cout << matrix_33.transpose() << endl;      // Transpose
-    cout << matrix_33.sum() << endl;            // Sum
-    cout << matrix_33.trace() << endl;          // Trace
-    cout << 10*matrix_33 << endl;               // Multiplication
-    cout << matrix_33.inverse() << endl;        // Inverse
-    cout << matrix_33.determinant() << endl;    // Determinant
+    BOOST_LOG_SEV(log, za::report)  << matrix_33.transpose() << "\n";      // Transpose
+    BOOST_LOG_SEV(log, za::report)  << matrix_33.sum() << "\n";            // Sum
+    BOOST_LOG_SEV(log, za::report)  << matrix_33.trace() << "\n";          // Trace
+    BOOST_LOG_SEV(log, za::report)  << 10*matrix_33 << "\n";               // Multiplication
+    BOOST_LOG_SEV(log, za::report)  << matrix_33.inverse() << "\n";        // Inverse
+    BOOST_LOG_SEV(log, za::report)  << matrix_33.determinant() << "\n";    // Determinant
 
     // Eigenvalues
     // Real symmetric matrix can ensure the success of diagonalization
     Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> eigen_solver ( matrix_33.transpose()*matrix_33 );
-    cout << "Eigen values = \n" << eigen_solver.eigenvalues() << endl;
-    cout << "Eigen vectors = \n" << eigen_solver.eigenvectors() << endl;
+    BOOST_LOG_SEV(log, za::report)  << "Eigen values = \n" << eigen_solver.eigenvalues() << "\n";
+    BOOST_LOG_SEV(log, za::report)  << "Eigen vectors = \n" << eigen_solver.eigenvectors() << "\n";
 
     // Solving equations
     // We solve the equation matrix_NN * x = v_Nd
@@ -95,12 +103,12 @@ int main( int argc, char** argv )
     clock_t time_stt = clock(); // timer
     // take inverse
     Eigen::Matrix<double,MATRIX_SIZE,1> x = matrix_NN.inverse()*v_Nd;
-    cout <<"time use in normal inverse is " << 1000* (clock() - time_stt)/(double)CLOCKS_PER_SEC << "ms"<< endl;
+    BOOST_LOG_SEV(log, za::report)  <<"time use in normal inverse is " << 1000* (clock() - time_stt)/(double)CLOCKS_PER_SEC << "ms"<< "\n";
     
 	// qr decomposition
     time_stt = clock();
     x = matrix_NN.colPivHouseholderQr().solve(v_Nd);
-    cout <<"time use in Qr decomposition is " <<1000*  (clock() - time_stt)/(double)CLOCKS_PER_SEC <<"ms" << endl;
+    BOOST_LOG_SEV(log, za::report)  <<"time use in Qr decomposition is " <<1000*  (clock() - time_stt)/(double)CLOCKS_PER_SEC <<"ms" << "\n";
 
     return 0;
 }
