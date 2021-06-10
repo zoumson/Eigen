@@ -83,10 +83,12 @@ Eigen matrix manipulation
 .
 ├── CMakeLists.txt
 ├── include
-│   └── FctArgs.h
+│   └── Log.h
 ├── README.md
 └── src
-    └── Demo.cpp
+    ├── eigenGeometry.cpp
+    ├── eigenMatrix.cpp
+    └── visualizeGeometry.cpp
 
 ```
 
