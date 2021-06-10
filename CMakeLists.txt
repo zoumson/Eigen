@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.9)
 
 #set the project name
-project (plate)
+project (eigen)
 
 #Set the compiler
 set(CMAKE_CXX_STANDARD 17)
