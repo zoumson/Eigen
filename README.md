@@ -67,6 +67,7 @@ Eigen matrix manipulation
 * [eigen](https://eigen.tuxfamily.org/)
 * [boost](https://boost.org/)
 * [Pangolin](https://github.com/stevenlovegrove/Pangolin)
+* [openGL](https://www.opengl.org/)
 <br>
 
 ## File Structure
